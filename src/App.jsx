@@ -5,6 +5,8 @@ import Home from "./pages/Home.jsx";
 import HotelPhotos from "./pages/HotelPhotos.jsx";
 import Kalavryta from "./pages/Kalavryta.jsx";
 import Contact from "./pages/Contact.jsx";
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 function App() {
   return (
