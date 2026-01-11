@@ -1,0 +1,504 @@
+@import url('https://fonts.googleapis.com/css2?family=Pontano+Sans:wght@300;400;500;600;700&display=swap');
+
+:root{
+  /* Palette: καφέ / κίτρινο / πράσινο / μπεζ */
+  --brown-900:#5c4033;
+  --brown-800:#6b3f2b;
+  --brown-700:#8B4513;
+  --brown-600:#A0522D;
+  --brown-500:#D2691E;
+
+  --gold-500:#f0c674;
+  --gold-400:#f4d35e;
+
+  --green-600:#4a7c59;
+  --green-500:#6b9e71;
+
+  --beige-50:#fbf4e2;
+  --beige-100:#f5e8c7;
+  --beige-200:#e8d5b7;
+
+  --container:1200px;
+
+  /* z-index layers */
+  --z-header: 2000;
+  --z-overlay: 2100;
+  --z-menu: 2150;
+  --z-button: 2200;
+}
+
+/* Αφαιρεί border-radius παντού */
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  border-radius: 0 !important;
+}
+
+html, body { height: 100%; }
+
+body{
+  font-family:'Pontano Sans', sans-serif;
+  background: linear-gradient(135deg, var(--beige-100) 0%, #d9c2a6 50%, var(--beige-200) 100%);
+  color: var(--brown-900);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+a{ color: inherit; }
+
+.app{
+  min-height: 100vh;
+  display:flex;
+  flex-direction: column;
+}
+
+/* =========================
+   Header (μόνο δεξιά)
+========================= */
+.header{
+  background: linear-gradient(135deg, var(--brown-700) 0%, var(--brown-600) 55%, var(--brown-500) 100%);
+  color: var(--beige-100);
+  padding: 0.55rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  border-bottom: 2px solid var(--gold-500);
+}
+
+.header-content{
+  max-width: var(--container);
+  margin: 0 auto;
+  display:flex;
+  align-items:center;
+  justify-content: flex-end; /* δεν υπάρχει αριστερά logo/όνομα */
+  gap: 0.6rem;
+}
+
+.header-right{
+  justify-content: flex-end;
+}
+
+/* Desktop nav */
+.nav{
+  display:flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.nav a{
+  text-decoration:none;
+  color: var(--beige-100);
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid rgba(245, 232, 199, 0.35);
+  background: rgba(245, 232, 199, 0.12);
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.nav a:hover{
+  background: rgba(245, 232, 199, 0.22);
+  border-color: rgba(245, 232, 199, 0.55);
+}
+
+.nav a.active{
+  background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
+  color: var(--brown-900);
+  border-color: rgba(210, 105, 30, 0.55);
+}
+
+/* Hamburger (κρυφό σε desktop) */
+.menu-button{
+  display:none;
+  font: inherit;
+  font-weight: 800;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--beige-100);
+  background: rgba(245, 232, 199, 0.12);
+  border: 1px solid rgba(245, 232, 199, 0.35);
+  padding: 0.45rem 0.65rem;
+  cursor: pointer;
+}
+
+/* Backdrop overlay (κρυφό όταν κλειστό) */
+.menu-overlay{
+  display:none;
+}
+
+/* =========================
+   Main container
+========================= */
+.main-content{
+  max-width: var(--container);
+  margin: 0 auto;
+  width: 100%;
+  padding: 2rem 1rem 3rem;
+}
+
+/* =========================
+   Hero (Home)
+========================= */
+.home-hero{
+  height: 92vh;
+  overflow: hidden;
+  border: 2px solid rgba(210, 105, 30, 0.55);
+  background:
+    linear-gradient(rgba(139, 69, 19, 0.55), rgba(74, 124, 89, 0.35)),
+    url('/images/hotel-hero.jpg');
+  background-size: cover;
+  background-position: center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  margin-bottom: 2.5rem;
+}
+
+.hero-overlay{
+  background: rgba(245, 232, 199, 0.92);
+  border: 1px solid rgba(210, 105, 30, 0.55);
+  padding: 2.25rem 1.75rem;
+  max-width: 860px;
+  margin: 0 1rem;
+}
+
+.hero-overlay h1{
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+  font-weight: 800;
+  color: var(--brown-700);
+  line-height: 1.1;
+  margin-bottom: 0.8rem;
+}
+
+.hero-overlay p{
+  font-size: clamp(1.05rem, 2.5vw, 1.5rem);
+  color: var(--brown-900);
+  margin-bottom: 1.4rem;
+  font-weight: 400;
+}
+
+.hero-buttons{
+  display:flex;
+  gap: 0.9rem;
+  justify-content:center;
+  flex-wrap: wrap;
+}
+
+.btn-primary, .btn-secondary{
+  display:inline-block;
+  text-decoration:none;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.85rem 1.25rem;
+  border: 1px solid transparent;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-primary{
+  background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
+  color: var(--brown-900);
+  border-color: rgba(210, 105, 30, 0.55);
+}
+
+.btn-secondary{
+  background: linear-gradient(135deg, var(--green-600), var(--green-500));
+  color: var(--beige-100);
+  border-color: rgba(92, 64, 51, 0.55);
+}
+
+.btn-primary:hover,
+.btn-secondary:hover{
+  transform: translateY(-2px);
+}
+
+/* =========================
+   Home/Kalavryta wrappers
+========================= */
+.home-content,
+.kalavryta-content{
+  width: 100%;
+}
+
+.page-title{
+  text-align:center;
+  color: var(--brown-700);
+  font-weight: 900;
+  margin: 0.5rem 0 1.8rem;
+  font-size: clamp(2rem, 5.5vw, 3.2rem);
+}
+
+.page-subtitle{
+  text-align:center;
+  color: var(--brown-800);
+  font-weight: 600;
+  margin-bottom: 2.4rem;
+  font-size: clamp(1.2rem, 3.2vw, 1.8rem);
+}
+
+/* =========================
+   Alternating rows
+========================= */
+.content-row{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "photo text";
+  gap: 1.6rem;
+  align-items: center;
+  padding: 1.2rem;
+  background: rgba(251, 244, 226, 0.65);
+  border: 1px solid rgba(210, 105, 30, 0.35);
+  margin-bottom: 1.8rem;
+}
+
+.photo-side { grid-area: photo; }
+.text-side  { grid-area: text; }
+
+.content-row.reverse{
+  grid-template-areas: "text photo";
+}
+
+.photo-side img{
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  border: 2px solid rgba(240, 198, 116, 0.85);
+  display:block;
+}
+
+.text-side{
+  padding: 0.5rem 0.5rem;
+}
+
+.text-side h2{
+  text-align: left;
+  margin-bottom: 0.6rem;
+  font-size: clamp(1.4rem, 3.2vw, 2rem);
+  color: var(--brown-700);
+  font-weight: 800;
+}
+
+.text-side p{
+  text-align: left;
+  margin: 0;
+  max-width: none;
+  font-size: 1.08rem;
+  color: var(--brown-900);
+}
+
+/* =========================
+   Panels (Photos/Contact)
+========================= */
+.photos,
+.contact{
+  background: rgba(245, 232, 199, 0.92);
+  border: 1px solid rgba(210, 105, 30, 0.45);
+  padding: 2.25rem 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.photos h2,
+.contact h2{
+  font-size: clamp(1.6rem, 4.2vw, 2.4rem);
+  color: var(--brown-700);
+  text-align: center;
+  margin-bottom: 1.1rem;
+  font-weight: 800;
+}
+
+.photos p,
+.contact p{
+  max-width: 900px;
+  margin: 0 auto 1rem;
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--brown-900);
+}
+
+/* =========================
+   Photo grid (HotelPhotos)
+========================= */
+.photo-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.photo-grid img{
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border: 2px solid rgba(240, 198, 116, 0.85);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  display:block;
+}
+
+.photo-grid img:hover{
+  transform: scale(1.01);
+  border-color: rgba(210, 105, 30, 0.65);
+}
+
+/* =========================
+   Contact
+========================= */
+.contact p strong{
+  color: var(--brown-700);
+  font-weight: 800;
+}
+
+.contact a{
+  color: var(--brown-700);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-bottom-color 0.2s ease;
+}
+
+.contact a:hover{
+  border-bottom-color: rgba(210, 105, 30, 0.65);
+}
+
+.map-wrapper{
+  margin-top: 1.2rem;
+  overflow:hidden;
+  border: 2px solid rgba(210, 105, 30, 0.55);
+}
+
+/* =========================
+   Footer
+========================= */
+.footer{
+  margin-top: auto;
+  background: linear-gradient(135deg, var(--brown-900) 0%, var(--brown-700) 60%, var(--brown-600) 100%);
+  color: var(--beige-100);
+  text-align:center;
+  padding: 1.5rem 1rem;
+  border-top: 2px solid var(--gold-500);
+}
+
+.footer a{
+  color: var(--gold-500);
+  text-decoration:none;
+  font-weight: 700;
+}
+
+/* =========================
+   Responsive (tablet)
+========================= */
+@media (max-width: 900px){
+  .nav{
+    justify-content: center;
+  }
+}
+
+/* =========================
+   Mobile: Fullscreen overlay menu (1 στήλη)
+========================= */
+@media (max-width: 768px){
+  .main-content{
+    padding: 1.4rem 0.75rem 2.5rem;
+  }
+
+  .home-hero{
+    height: 88vh;
+  }
+
+  .hero-overlay{
+    padding: 1.6rem 1.1rem;
+  }
+
+  .content-row{
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "photo"
+      "text";
+  }
+
+  .content-row.reverse{
+    grid-template-areas:
+      "photo"
+      "text";
+  }
+
+  .photo-side img{
+    height: 280px;
+  }
+
+  .text-side h2,
+  .text-side p{
+    text-align: center;
+  }
+
+  /* Header mobile layout */
+  .header-content{
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  /* δείξε hamburger */
+  .menu-button{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: var(--z-button);
+  }
+
+  /* κρύψε το desktop nav */
+  .nav{
+    display: none;
+  }
+
+  /* backdrop */
+  .menu-overlay.show{
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(92, 64, 51, 0.55);
+    z-index: var(--z-overlay);
+  }
+
+  /* Ανοιχτό: panel που επικαλύπτει (ΔΕΝ είναι full screen) */
+  .nav.open{
+    display:flex;
+    flex-direction: column;              /* μία στήλη */ /* [web:132] */
+    gap: 0.5rem;
+
+    position: fixed;                     /* overlay, δεν σπρώχνει content */ /* [web:188] */
+    top: 3.2rem;                         /* περίπου κάτω από το header */
+    right: 0.75rem;
+    width: min(340px, calc(100vw - 1.5rem));
+
+    max-height: calc(100vh - 4.2rem);
+    overflow: auto;
+
+    z-index: var(--z-menu);
+    padding: 0.75rem;
+
+    background: linear-gradient(
+      135deg,
+      var(--brown-900) 0%,
+      var(--brown-700) 60%,
+      var(--brown-600) 100%
+    );
+
+    border: 1px solid rgba(245, 232, 199, 0.35);
+  }
+
+  .nav.open a{
+    width: 100%;
+    text-align: right;
+    padding: 0.8rem 0.85rem;
+    border: 1px solid rgba(245, 232, 199, 0.35);
+    background: rgba(245, 232, 199, 0.10);
+  }
+
+  .nav.open a.active{
+    background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
+    color: var(--brown-900);
+    border-color: rgba(210, 105, 30, 0.55);
+  }
+}
