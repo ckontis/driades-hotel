@@ -1,10 +1,19 @@
+import { useScrollReveal } from "../hooks/useScrollReveal";
+
 function Kalavryta() {
+  const s1 = useScrollReveal();
+  const s2 = useScrollReveal();
+  const s3 = useScrollReveal();
+  const s4 = useScrollReveal();
+  const s5 = useScrollReveal();
+  const s6 = useScrollReveal();
+  const s7 = useScrollReveal();
+
   return (
     <div className="kalavryta-content">
       <h1 className="page-title">Καλάβρυτα</h1>
-      <h1 className="page-subtitle">Αξιοθέατα & Δραστηριότητες</h1>
-      {/* 1) Σπήλαιο Λιμνών */}
-      <section className="content-row">
+
+      <section ref={s1.ref} className={`content-row reveal ${s1.visible ? "visible" : ""}`}>
         <div className="photo-side">
           <img src="/images/kalavryta/limnon.jpg" alt="Σπήλαιο Λιμνών" />
         </div>
@@ -16,8 +25,7 @@ function Kalavryta() {
         </div>
       </section>
 
-      {/* 2) Αγία Λαύρα */}
-      <section className="content-row reverse">
+      <section ref={s2.ref} className={`content-row reverse reveal ${s2.visible ? "visible" : ""}`}>
         <div className="text-side">
           <h2>Μονή Αγίας Λαύρας</h2>
           <p>
@@ -29,8 +37,7 @@ function Kalavryta() {
         </div>
       </section>
 
-      {/* 3) Μέγα Σπήλαιο */}
-      <section className="content-row">
+      <section ref={s3.ref} className={`content-row reveal ${s3.visible ? "visible" : ""}`}>
         <div className="photo-side">
           <img src="/images/kalavryta/mega-spilaio.jpg" alt="Μονή Μεγάλου Σπηλαίου" />
         </div>
@@ -42,8 +49,7 @@ function Kalavryta() {
         </div>
       </section>
 
-      {/* 4) Χιονοδρομικό */}
-      <section className="content-row reverse">
+      <section ref={s4.ref} className={`content-row reverse reveal ${s4.visible ? "visible" : ""}`}>
         <div className="text-side">
           <h2>Χιονοδρομικό Κέντρο Καλαβρύτων</h2>
           <p>
@@ -55,8 +61,7 @@ function Kalavryta() {
         </div>
       </section>
 
-      {/* 5) Τόπος Θυσίας */}
-      <section className="content-row">
+      <section ref={s5.ref} className={`content-row reveal ${s5.visible ? "visible" : ""}`}>
         <div className="photo-side">
           <img src="/images/kalavryta/topos-thysias.jpg" alt="Τόπος Θυσίας" />
         </div>
@@ -68,8 +73,7 @@ function Kalavryta() {
         </div>
       </section>
 
-      {/* 6) Μουσείο Καλαβρυτινού Ολοκαυτώματος */}
-      <section className="content-row reverse">
+      <section ref={s6.ref} className={`content-row reverse reveal ${s6.visible ? "visible" : ""}`}>
         <div className="text-side">
           <h2>Μουσείο Καλαβρυτινού Ολοκαυτώματος</h2>
           <p>
@@ -81,8 +85,7 @@ function Kalavryta() {
         </div>
       </section>
 
-      {/* 7) Οδοντωτός */}
-      <section className="content-row">
+      <section ref={s7.ref} className={`content-row reveal ${s7.visible ? "visible" : ""}`}>
         <div className="photo-side">
           <img src="/images/kalavryta/odontotos.jpeg" alt="Οδοντωτός Διακοφτό–Καλάβρυτα" />
         </div>

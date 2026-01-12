@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Pontano+Sans:wght@300;400;500;600;700&display=swap');
 
 :root{
-  /* Palette: καφέ / κίτρινο / πράσινο / μπεζ */
   --brown-900:#5c4033;
   --brown-800:#6b3f2b;
   --brown-700:#8B4513;
@@ -20,14 +19,14 @@
 
   --container:1200px;
 
-  /* z-index layers */
   --z-header: 2000;
   --z-overlay: 2100;
   --z-menu: 2150;
   --z-button: 2200;
+  --z-lightbox: 5000;
 }
 
-/* Αφαιρεί border-radius παντού */
+/* No border radius everywhere */
 *{
   box-sizing:border-box;
   margin:0;
@@ -71,7 +70,7 @@ a{ color: inherit; }
   margin: 0 auto;
   display:flex;
   align-items:center;
-  justify-content: flex-end; /* δεν υπάρχει αριστερά logo/όνομα */
+  justify-content: flex-end;
   gap: 0.6rem;
 }
 
@@ -95,12 +94,13 @@ a{ color: inherit; }
   padding: 0.45rem 0.75rem;
   border: 1px solid rgba(245, 232, 199, 0.35);
   background: rgba(245, 232, 199, 0.12);
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .nav a:hover{
   background: rgba(245, 232, 199, 0.22);
   border-color: rgba(245, 232, 199, 0.55);
+  transform: translateY(-1px);
 }
 
 .nav a.active{
@@ -123,10 +123,7 @@ a{ color: inherit; }
   cursor: pointer;
 }
 
-/* Backdrop overlay (κρυφό όταν κλειστό) */
-.menu-overlay{
-  display:none;
-}
+.menu-overlay{ display:none; }
 
 /* =========================
    Main container
@@ -139,44 +136,98 @@ a{ color: inherit; }
 }
 
 /* =========================
-   Hero (Home)
+   Hero (Home) - 3 image crossfade
 ========================= */
 .home-hero{
-  height: 92vh;
+  height: 100vh;
   overflow: hidden;
   border: 2px solid rgba(210, 105, 30, 0.55);
-  background:
-    linear-gradient(rgba(139, 69, 19, 0.55), rgba(74, 124, 89, 0.35)),
-    url('/images/hotel-hero.jpg');
-  background-size: cover;
-  background-position: center;
+
+  position: relative;
   display:flex;
-  align-items:center;
+  align-items: flex-end;
   justify-content:center;
   text-align:center;
+
   margin-bottom: 2.5rem;
 }
 
-.hero-overlay{
-  background: rgba(245, 232, 199, 0.92);
-  border: 1px solid rgba(210, 105, 30, 0.55);
-  padding: 2.25rem 1.75rem;
-  max-width: 860px;
-  margin: 0 1rem;
+/* Slides container */
+.hero-slides{
+  position:absolute;
+  inset:0;
+  z-index:0;
 }
 
-.hero-overlay h1{
+/* One slide layer */
+.hero-slide{
+  position:absolute;
+  inset:0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.02);
+  animation: heroCrossfade 18s ease-in-out infinite;
+}
+
+/* 3 images (βάλε τα files στο public/images/hero/) */
+.hero-slide.s1{ background-image: url('/images/hero/hero-1.jpg'); animation-delay: 0s; }
+.hero-slide.s2{ background-image: url('/images/hero/hero-2.jpg'); animation-delay: 6s; }
+.hero-slide.s3{ background-image: url('/images/hero/hero-3.jpg'); animation-delay: 12s; }
+
+/* Crossfade keyframes:
+   - fade in
+   - stay visible
+   - fade out
+   - stay hidden
+*/
+@keyframes heroCrossfade{
+  0%   { opacity: 0; transform: scale(1.02); }
+  10%  { opacity: 1; transform: scale(1); }
+  35%  { opacity: 1; transform: scale(1); }
+  50%  { opacity: 0; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}
+
+/* Subtle overall overlay for readability (not a box) */
+.home-hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background: linear-gradient(rgba(0,0,0,0.05), rgba(0,0,0,0.28));
+}
+
+/* Text on top */
+.hero-text{
+  position: relative;
+  z-index: 2;
+  width: calc(100% - 2rem);
+  max-width: 980px;
+  margin: 0 1rem 2.2rem;
+  color: rgba(245, 232, 199, 0.98);
+}
+
+@keyframes heroTextIn{
+  from { transform: translateY(-22px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+.hero-text-animate{
+  opacity: 0;
+  animation: heroTextIn 750ms ease-out 0ms forwards;
+}
+
+.hero-text h1{
   font-size: clamp(2.2rem, 6vw, 4.2rem);
   font-weight: 800;
-  color: var(--brown-700);
   line-height: 1.1;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.6rem;
 }
 
-.hero-overlay p{
+.hero-text p{
   font-size: clamp(1.05rem, 2.5vw, 1.5rem);
-  color: var(--brown-900);
-  margin-bottom: 1.4rem;
+  margin-bottom: 1.2rem;
   font-weight: 400;
 }
 
@@ -215,12 +266,10 @@ a{ color: inherit; }
 }
 
 /* =========================
-   Home/Kalavryta wrappers
+   Wrappers / titles
 ========================= */
 .home-content,
-.kalavryta-content{
-  width: 100%;
-}
+.kalavryta-content{ width: 100%; }
 
 .page-title{
   text-align:center;
@@ -228,14 +277,6 @@ a{ color: inherit; }
   font-weight: 900;
   margin: 0.5rem 0 1.8rem;
   font-size: clamp(2rem, 5.5vw, 3.2rem);
-}
-
-.page-subtitle{
-  text-align:center;
-  color: var(--brown-800);
-  font-weight: 600;
-  margin-bottom: 2.4rem;
-  font-size: clamp(1.2rem, 3.2vw, 1.8rem);
 }
 
 /* =========================
@@ -289,6 +330,20 @@ a{ color: inherit; }
 }
 
 /* =========================
+   Reveal on scroll
+========================= */
+.reveal{
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 520ms ease-out, transform 520ms ease-out;
+}
+
+.reveal.visible{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================
    Panels (Photos/Contact)
 ========================= */
 .photos,
@@ -308,7 +363,6 @@ a{ color: inherit; }
   font-weight: 800;
 }
 
-.photos p,
 .contact p{
   max-width: 900px;
   margin: 0 auto 1rem;
@@ -318,13 +372,20 @@ a{ color: inherit; }
 }
 
 /* =========================
-   Photo grid (HotelPhotos)
+   Photo grid + click tiles + stagger reveal
 ========================= */
 .photo-grid{
   display:grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1rem;
   margin-top: 1.2rem;
+}
+
+.photo-tile{
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
 .photo-grid img{
@@ -336,9 +397,102 @@ a{ color: inherit; }
   display:block;
 }
 
+.reveal-grid img{
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 520ms ease-out, transform 520ms ease-out;
+}
+
+.reveal-grid.visible img{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-grid.visible img:nth-child(1)  { transition-delay: 0ms; }
+.reveal-grid.visible img:nth-child(2)  { transition-delay: 60ms; }
+.reveal-grid.visible img:nth-child(3)  { transition-delay: 120ms; }
+.reveal-grid.visible img:nth-child(4)  { transition-delay: 180ms; }
+.reveal-grid.visible img:nth-child(5)  { transition-delay: 240ms; }
+.reveal-grid.visible img:nth-child(6)  { transition-delay: 300ms; }
+.reveal-grid.visible img:nth-child(7)  { transition-delay: 360ms; }
+.reveal-grid.visible img:nth-child(8)  { transition-delay: 420ms; }
+.reveal-grid.visible img:nth-child(9)  { transition-delay: 480ms; }
+.reveal-grid.visible img:nth-child(10) { transition-delay: 540ms; }
+.reveal-grid.visible img:nth-child(11) { transition-delay: 600ms; }
+.reveal-grid.visible img:nth-child(12) { transition-delay: 660ms; }
+
 .photo-grid img:hover{
   transform: scale(1.01);
   border-color: rgba(210, 105, 30, 0.65);
+}
+
+/* =========================
+   Lightbox (modal)
+========================= */
+.lightbox-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: var(--z-lightbox);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.lightbox-content{
+  position: relative;
+  width: min(1100px, 100%);
+  border: 1px solid rgba(245, 232, 199, 0.25);
+  background: rgba(20, 16, 14, 0.55);
+  padding: 0.75rem;
+}
+
+.lightbox-img{
+  width: 100%;
+  height: auto;
+  max-height: 78vh;
+  object-fit: contain;
+  display: block;
+  border: 1px solid rgba(245, 232, 199, 0.2);
+}
+
+.lightbox-close{
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  border: 1px solid rgba(245, 232, 199, 0.25);
+  background: rgba(245, 232, 199, 0.12);
+  color: rgba(245, 232, 199, 0.95);
+  font: inherit;
+  font-weight: 800;
+  padding: 0.35rem 0.55rem;
+  cursor: pointer;
+}
+
+.lightbox-nav{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 1px solid rgba(245, 232, 199, 0.25);
+  background: rgba(245, 232, 199, 0.10);
+  color: rgba(245, 232, 199, 0.95);
+  font: inherit;
+  font-weight: 900;
+  font-size: 2rem;
+  line-height: 1;
+  padding: 0.2rem 0.55rem;
+  cursor: pointer;
+}
+
+.lightbox-nav.left{ left: 0.35rem; }
+.lightbox-nav.right{ right: 0.35rem; }
+
+.lightbox-caption{
+  margin-top: 0.6rem;
+  color: rgba(245, 232, 199, 0.92);
+  text-align: right;
+  font-weight: 600;
 }
 
 /* =========================
@@ -386,28 +540,11 @@ a{ color: inherit; }
 }
 
 /* =========================
-   Responsive (tablet)
-========================= */
-@media (max-width: 900px){
-  .nav{
-    justify-content: center;
-  }
-}
-
-/* =========================
-   Mobile: Fullscreen overlay menu (1 στήλη)
+   Mobile
 ========================= */
 @media (max-width: 768px){
   .main-content{
     padding: 1.4rem 0.75rem 2.5rem;
-  }
-
-  .home-hero{
-    height: 88vh;
-  }
-
-  .hero-overlay{
-    padding: 1.6rem 1.1rem;
   }
 
   .content-row{
@@ -432,13 +569,11 @@ a{ color: inherit; }
     text-align: center;
   }
 
-  /* Header mobile layout */
+  /* mobile menu panel overlay (όπως το έχεις ήδη) */
   .header-content{
-    justify-content: flex-end;
     flex-wrap: wrap;
   }
 
-  /* δείξε hamburger */
   .menu-button{
     display: inline-flex;
     align-items: center;
@@ -447,28 +582,25 @@ a{ color: inherit; }
     z-index: var(--z-button);
   }
 
-  /* κρύψε το desktop nav */
   .nav{
     display: none;
   }
 
-  /* backdrop */
   .menu-overlay.show{
-    display: block;
+    display:block;
     position: fixed;
     inset: 0;
-    background: rgba(92, 64, 51, 0.55);
+    background: rgba(92, 64, 51, 0.35);
     z-index: var(--z-overlay);
   }
 
-  /* Ανοιχτό: panel που επικαλύπτει (ΔΕΝ είναι full screen) */
   .nav.open{
     display:flex;
-    flex-direction: column;              /* μία στήλη */ /* [web:132] */
+    flex-direction: column;
     gap: 0.5rem;
 
-    position: fixed;                     /* overlay, δεν σπρώχνει content */ /* [web:188] */
-    top: 3.2rem;                         /* περίπου κάτω από το header */
+    position: fixed;
+    top: 3.2rem;
     right: 0.75rem;
     width: min(340px, calc(100vw - 1.5rem));
 
@@ -478,13 +610,7 @@ a{ color: inherit; }
     z-index: var(--z-menu);
     padding: 0.75rem;
 
-    background: linear-gradient(
-      135deg,
-      var(--brown-900) 0%,
-      var(--brown-700) 60%,
-      var(--brown-600) 100%
-    );
-
+    background: linear-gradient(135deg, var(--brown-900) 0%, var(--brown-700) 60%, var(--brown-600) 100%);
     border: 1px solid rgba(245, 232, 199, 0.35);
   }
 
@@ -500,5 +626,41 @@ a{ color: inherit; }
     background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
     color: var(--brown-900);
     border-color: rgba(210, 105, 30, 0.55);
+  }
+
+  .lightbox-nav{
+    font-size: 1.7rem;
+  }
+
+  .hero-text {
+
+    margin:0 0 80% 0;
+  }
+
+  .hero-text h1{
+    font-size: clamp(1.8rem, 7vw, 3.2rem);
+  }
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce){
+  .hero-slide{
+    animation: none !important;
+    opacity: 0 !important;
+    transform: none !important;
+  }
+  .hero-slide.s1{
+    opacity: 1 !important;
+  }
+  .hero-text-animate{
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .reveal,
+  .reveal-grid img{
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
