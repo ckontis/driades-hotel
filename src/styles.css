@@ -26,6 +26,7 @@
   --z-lightbox: 5000;
 }
 
+/* Αφαιρεί border-radius παντού */
 *{
   box-sizing:border-box;
   margin:0;
@@ -51,11 +52,11 @@ a{ color: inherit; }
   flex-direction: column;
 }
 
-/* Utility: full-bleed inside a centered container */
+/* Utility: full-bleed μέσα σε κεντρικό container */
 .full-bleed{
   width: 100vw;
   margin-left: calc(50% - 50vw);
-} /* technique: breakout/full-bleed [web:470] */
+}
 
 /* =========================
    Header
@@ -79,8 +80,11 @@ a{ color: inherit; }
   gap: 0.6rem;
 }
 
-.header-right{ justify-content: flex-end; }
+.header-right{
+  justify-content: flex-end;
+}
 
+/* Desktop nav */
 .nav{
   display:flex;
   gap: 0.6rem;
@@ -111,6 +115,7 @@ a{ color: inherit; }
   border-color: rgba(210, 105, 30, 0.55);
 }
 
+/* Hamburger (κρυφό σε desktop) */
 .menu-button{
   display:none;
   font: inherit;
@@ -124,7 +129,10 @@ a{ color: inherit; }
   cursor: pointer;
 }
 
-.menu-overlay{ display:none; }
+/* Backdrop overlay (κρυφό όταν κλειστό) */
+.menu-overlay{
+  display:none;
+}
 
 /* =========================
    Main container
@@ -136,7 +144,7 @@ a{ color: inherit; }
 }
 
 /* =========================
-   Hero (Home) - full screen, no border
+   Hero (Home) - full screen, 3 εικόνες crossfade
 ========================= */
 .home-hero{
   height: 100vh;
@@ -149,7 +157,7 @@ a{ color: inherit; }
   text-align:center;
 
   margin-bottom: 2.5rem;
-  border: none; /* αφαιρεί το “κουτάκι” */
+  border: none;
 }
 
 /* slides */
@@ -181,7 +189,7 @@ a{ color: inherit; }
   100% { opacity: 0; transform: scale(1); }
 }
 
-/* subtle overlay for readability */
+/* ήπιο overlay για αναγνωσιμότητα */
 .home-hero::after{
   content:"";
   position:absolute;
@@ -257,7 +265,7 @@ a{ color: inherit; }
 }
 
 /* =========================
-   Alternating rows etc (same as before)
+   Layout sections (rows)
 ========================= */
 .home-content,
 .kalavryta-content{ width: 100%; }
@@ -317,6 +325,7 @@ a{ color: inherit; }
   color: var(--brown-900);
 }
 
+/* reveal */
 .reveal{
   opacity: 0;
   transform: translateY(22px);
@@ -328,6 +337,7 @@ a{ color: inherit; }
   transform: translateY(0);
 }
 
+/* Panels */
 .photos,
 .contact{
   background: rgba(245, 232, 199, 0.92);
@@ -354,6 +364,7 @@ a{ color: inherit; }
   font-weight: 800;
 }
 
+/* Photo grid */
 .photo-grid{
   display:grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -388,7 +399,6 @@ a{ color: inherit; }
   transform: translateY(0);
 }
 
-/* 12-photo stagger */
 .reveal-grid.visible img:nth-child(1)  { transition-delay: 0ms; }
 .reveal-grid.visible img:nth-child(2)  { transition-delay: 60ms; }
 .reveal-grid.visible img:nth-child(3)  { transition-delay: 120ms; }
@@ -407,7 +417,7 @@ a{ color: inherit; }
   border-color: rgba(210, 105, 30, 0.65);
 }
 
-/* Lightbox (unchanged) */
+/* Lightbox */
 .lightbox-overlay{
   position: fixed;
   inset: 0;
@@ -474,6 +484,7 @@ a{ color: inherit; }
   font-weight: 600;
 }
 
+/* Footer */
 .footer{
   margin-top: auto;
   background: linear-gradient(135deg, var(--brown-900) 0%, var(--brown-700) 60%, var(--brown-600) 100%);
@@ -483,15 +494,21 @@ a{ color: inherit; }
   border-top: 2px solid var(--gold-500);
 }
 
+.footer a{
+  color: var(--gold-500);
+  text-decoration:none;
+  font-weight: 700;
+}
+
 /* =========================
-   Mobile tweaks
+   Mobile
 ========================= */
 @media (max-width: 768px){
   .main-content{
     padding: 1.4rem 0.75rem 2.5rem;
   }
 
-  /* Mobile: center text in hero */
+  /* Hero text center on mobile */
   .home-hero{
     align-items: center;
     margin-bottom: 2rem;
@@ -500,6 +517,7 @@ a{ color: inherit; }
     margin: 0 1rem;
   }
 
+  /* Rows */
   .content-row{
     grid-template-columns: 1fr;
     grid-template-areas:
@@ -520,6 +538,72 @@ a{ color: inherit; }
   .text-side h2,
   .text-side p{
     text-align: center;
+  }
+
+  /* ===== Fix: Mobile menu panel overlay (επικάλυψη, όχι push) ===== */
+  .header-content{
+    flex-wrap: wrap;
+  }
+
+  .menu-button{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: var(--z-button);
+  }
+
+  /* κρύψε το desktop nav */
+  .nav{
+    display: none;
+  }
+
+  /* backdrop (για tap έξω να κλείνει) */
+  .menu-overlay.show{
+    display:block;
+    position: fixed;
+    inset: 0;
+    background: rgba(92, 64, 51, 0.35);
+    z-index: var(--z-overlay);
+  }
+
+  /* panel menu πάνω από τη σελίδα */
+  .nav.open{
+    display:flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    position: fixed;
+    top: 3.2rem;
+    right: 0.75rem;
+    width: min(340px, calc(100vw - 1.5rem));
+
+    max-height: calc(100vh - 4.2rem);
+    overflow: auto;
+
+    z-index: var(--z-menu);
+    padding: 0.75rem;
+
+    background: linear-gradient(135deg, var(--brown-900) 0%, var(--brown-700) 60%, var(--brown-600) 100%);
+    border: 1px solid rgba(245, 232, 199, 0.35);
+  }
+
+  .nav.open a{
+    width: 100%;
+    text-align: right;
+    padding: 0.8rem 0.85rem;
+    border: 1px solid rgba(245, 232, 199, 0.35);
+    background: rgba(245, 232, 199, 0.10);
+  }
+
+  .nav.open a.active{
+    background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
+    color: var(--brown-900);
+    border-color: rgba(210, 105, 30, 0.55);
+  }
+
+  .lightbox-nav{
+    font-size: 1.7rem;
   }
 }
 
