@@ -3,7 +3,6 @@ import { useScrollReveal } from "../hooks/useScrollReveal";
 
 function HotelPhotos() {
   const section = useScrollReveal();
-  const grid = useScrollReveal();
 
   const photos = useMemo(
     () =>
@@ -27,7 +26,8 @@ function HotelPhotos() {
   const prev = () =>
     setActiveIndex((i) => (i - 1 + photos.length) % photos.length);
 
-  const next = () => setActiveIndex((i) => (i + 1) % photos.length);
+  const next = () =>
+    setActiveIndex((i) => (i + 1) % photos.length);
 
   useEffect(() => {
     const onKeyDown = (e) => {
@@ -49,10 +49,7 @@ function HotelPhotos() {
       >
         <h2>Φωτογραφίες</h2>
 
-        <div
-          ref={grid.ref}
-          className={`photo-grid reveal-grid ${grid.visible ? "visible" : ""}`}
-        >
+        <div className={`photo-grid reveal-grid ${section.visible ? "visible" : ""}`}>
           {photos.map((p, idx) => (
             <button
               key={idx}
@@ -67,7 +64,6 @@ function HotelPhotos() {
         </div>
       </section>
 
-      {/* Lightbox */}
       {lightboxOpen && (
         <div className="lightbox-overlay" onClick={close} role="dialog" aria-modal="true">
           <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>

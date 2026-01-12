@@ -8,7 +8,7 @@ function Home() {
   return (
     <div className="home-content">
       {/* Hero Section with 3-image crossfade */}
-      <section className="home-hero">
+      <section className="home-hero full-bleed">
         <div className="hero-slides" aria-hidden="true">
           <div className="hero-slide s1" />
           <div className="hero-slide s2" />

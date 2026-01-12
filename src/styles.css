@@ -26,7 +26,6 @@
   --z-lightbox: 5000;
 }
 
-/* No border radius everywhere */
 *{
   box-sizing:border-box;
   margin:0;
@@ -52,8 +51,14 @@ a{ color: inherit; }
   flex-direction: column;
 }
 
+/* Utility: full-bleed inside a centered container */
+.full-bleed{
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+} /* technique: breakout/full-bleed [web:470] */
+
 /* =========================
-   Header (μόνο δεξιά)
+   Header
 ========================= */
 .header{
   background: linear-gradient(135deg, var(--brown-700) 0%, var(--brown-600) 55%, var(--brown-500) 100%);
@@ -74,11 +79,8 @@ a{ color: inherit; }
   gap: 0.6rem;
 }
 
-.header-right{
-  justify-content: flex-end;
-}
+.header-right{ justify-content: flex-end; }
 
-/* Desktop nav */
 .nav{
   display:flex;
   gap: 0.6rem;
@@ -109,7 +111,6 @@ a{ color: inherit; }
   border-color: rgba(210, 105, 30, 0.55);
 }
 
-/* Hamburger (κρυφό σε desktop) */
 .menu-button{
   display:none;
   font: inherit;
@@ -132,34 +133,32 @@ a{ color: inherit; }
   max-width: var(--container);
   margin: 0 auto;
   width: 100%;
-  padding: 2rem 1rem 3rem;
 }
 
 /* =========================
-   Hero (Home) - 3 image crossfade
+   Hero (Home) - full screen, no border
 ========================= */
 .home-hero{
   height: 100vh;
   overflow: hidden;
-  border: 2px solid rgba(210, 105, 30, 0.55);
 
   position: relative;
   display:flex;
-  align-items: flex-end;
+  align-items: flex-end; /* desktop: χαμηλά */
   justify-content:center;
   text-align:center;
 
   margin-bottom: 2.5rem;
+  border: none; /* αφαιρεί το “κουτάκι” */
 }
 
-/* Slides container */
+/* slides */
 .hero-slides{
   position:absolute;
   inset:0;
   z-index:0;
 }
 
-/* One slide layer */
 .hero-slide{
   position:absolute;
   inset:0;
@@ -170,17 +169,10 @@ a{ color: inherit; }
   animation: heroCrossfade 18s ease-in-out infinite;
 }
 
-/* 3 images (βάλε τα files στο public/images/hero/) */
 .hero-slide.s1{ background-image: url('/images/hero/hero-1.jpg'); animation-delay: 0s; }
 .hero-slide.s2{ background-image: url('/images/hero/hero-2.jpg'); animation-delay: 6s; }
 .hero-slide.s3{ background-image: url('/images/hero/hero-3.jpg'); animation-delay: 12s; }
 
-/* Crossfade keyframes:
-   - fade in
-   - stay visible
-   - fade out
-   - stay hidden
-*/
 @keyframes heroCrossfade{
   0%   { opacity: 0; transform: scale(1.02); }
   10%  { opacity: 1; transform: scale(1); }
@@ -189,7 +181,7 @@ a{ color: inherit; }
   100% { opacity: 0; transform: scale(1); }
 }
 
-/* Subtle overall overlay for readability (not a box) */
+/* subtle overlay for readability */
 .home-hero::after{
   content:"";
   position:absolute;
@@ -198,7 +190,6 @@ a{ color: inherit; }
   background: linear-gradient(rgba(0,0,0,0.05), rgba(0,0,0,0.28));
 }
 
-/* Text on top */
 .hero-text{
   position: relative;
   z-index: 2;
@@ -266,7 +257,7 @@ a{ color: inherit; }
 }
 
 /* =========================
-   Wrappers / titles
+   Alternating rows etc (same as before)
 ========================= */
 .home-content,
 .kalavryta-content{ width: 100%; }
@@ -279,9 +270,6 @@ a{ color: inherit; }
   font-size: clamp(2rem, 5.5vw, 3.2rem);
 }
 
-/* =========================
-   Alternating rows
-========================= */
 .content-row{
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -329,9 +317,6 @@ a{ color: inherit; }
   color: var(--brown-900);
 }
 
-/* =========================
-   Reveal on scroll
-========================= */
 .reveal{
   opacity: 0;
   transform: translateY(22px);
@@ -343,24 +328,12 @@ a{ color: inherit; }
   transform: translateY(0);
 }
 
-/* =========================
-   Panels (Photos/Contact)
-========================= */
 .photos,
 .contact{
   background: rgba(245, 232, 199, 0.92);
   border: 1px solid rgba(210, 105, 30, 0.45);
   padding: 2.25rem 1.5rem;
   margin-bottom: 2rem;
-}
-
-.photos h2,
-.contact h2{
-  font-size: clamp(1.6rem, 4.2vw, 2.4rem);
-  color: var(--brown-700);
-  text-align: center;
-  margin-bottom: 1.1rem;
-  font-weight: 800;
 }
 
 .contact p{
@@ -371,9 +344,16 @@ a{ color: inherit; }
   color: var(--brown-900);
 }
 
-/* =========================
-   Photo grid + click tiles + stagger reveal
-========================= */
+
+.photos h2,
+.contact h2{
+  font-size: clamp(1.6rem, 4.2vw, 2.4rem);
+  color: var(--brown-700);
+  text-align: center;
+  margin-bottom: 1.1rem;
+  font-weight: 800;
+}
+
 .photo-grid{
   display:grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -408,6 +388,7 @@ a{ color: inherit; }
   transform: translateY(0);
 }
 
+/* 12-photo stagger */
 .reveal-grid.visible img:nth-child(1)  { transition-delay: 0ms; }
 .reveal-grid.visible img:nth-child(2)  { transition-delay: 60ms; }
 .reveal-grid.visible img:nth-child(3)  { transition-delay: 120ms; }
@@ -426,9 +407,7 @@ a{ color: inherit; }
   border-color: rgba(210, 105, 30, 0.65);
 }
 
-/* =========================
-   Lightbox (modal)
-========================= */
+/* Lightbox (unchanged) */
 .lightbox-overlay{
   position: fixed;
   inset: 0;
@@ -495,35 +474,6 @@ a{ color: inherit; }
   font-weight: 600;
 }
 
-/* =========================
-   Contact
-========================= */
-.contact p strong{
-  color: var(--brown-700);
-  font-weight: 800;
-}
-
-.contact a{
-  color: var(--brown-700);
-  font-weight: 700;
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-bottom-color 0.2s ease;
-}
-
-.contact a:hover{
-  border-bottom-color: rgba(210, 105, 30, 0.65);
-}
-
-.map-wrapper{
-  margin-top: 1.2rem;
-  overflow:hidden;
-  border: 2px solid rgba(210, 105, 30, 0.55);
-}
-
-/* =========================
-   Footer
-========================= */
 .footer{
   margin-top: auto;
   background: linear-gradient(135deg, var(--brown-900) 0%, var(--brown-700) 60%, var(--brown-600) 100%);
@@ -533,18 +483,21 @@ a{ color: inherit; }
   border-top: 2px solid var(--gold-500);
 }
 
-.footer a{
-  color: var(--gold-500);
-  text-decoration:none;
-  font-weight: 700;
-}
-
 /* =========================
-   Mobile
+   Mobile tweaks
 ========================= */
 @media (max-width: 768px){
   .main-content{
     padding: 1.4rem 0.75rem 2.5rem;
+  }
+
+  /* Mobile: center text in hero */
+  .home-hero{
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  .hero-text{
+    margin: 0 1rem;
   }
 
   .content-row{
@@ -568,78 +521,6 @@ a{ color: inherit; }
   .text-side p{
     text-align: center;
   }
-
-  /* mobile menu panel overlay (όπως το έχεις ήδη) */
-  .header-content{
-    flex-wrap: wrap;
-  }
-
-  .menu-button{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: var(--z-button);
-  }
-
-  .nav{
-    display: none;
-  }
-
-  .menu-overlay.show{
-    display:block;
-    position: fixed;
-    inset: 0;
-    background: rgba(92, 64, 51, 0.35);
-    z-index: var(--z-overlay);
-  }
-
-  .nav.open{
-    display:flex;
-    flex-direction: column;
-    gap: 0.5rem;
-
-    position: fixed;
-    top: 3.2rem;
-    right: 0.75rem;
-    width: min(340px, calc(100vw - 1.5rem));
-
-    max-height: calc(100vh - 4.2rem);
-    overflow: auto;
-
-    z-index: var(--z-menu);
-    padding: 0.75rem;
-
-    background: linear-gradient(135deg, var(--brown-900) 0%, var(--brown-700) 60%, var(--brown-600) 100%);
-    border: 1px solid rgba(245, 232, 199, 0.35);
-  }
-
-  .nav.open a{
-    width: 100%;
-    text-align: right;
-    padding: 0.8rem 0.85rem;
-    border: 1px solid rgba(245, 232, 199, 0.35);
-    background: rgba(245, 232, 199, 0.10);
-  }
-
-  .nav.open a.active{
-    background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
-    color: var(--brown-900);
-    border-color: rgba(210, 105, 30, 0.55);
-  }
-
-  .lightbox-nav{
-    font-size: 1.7rem;
-  }
-
-  .hero-text {
-
-    margin:0 0 80% 0;
-  }
-
-  .hero-text h1{
-    font-size: clamp(1.8rem, 7vw, 3.2rem);
-  }
 }
 
 /* Reduce motion */
@@ -649,9 +530,7 @@ a{ color: inherit; }
     opacity: 0 !important;
     transform: none !important;
   }
-  .hero-slide.s1{
-    opacity: 1 !important;
-  }
+  .hero-slide.s1{ opacity: 1 !important; }
   .hero-text-animate{
     animation: none !important;
     opacity: 1 !important;
