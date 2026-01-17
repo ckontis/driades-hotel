@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { useScrollReveal } from "../hooks/useScrollReveal";
+import HeroVideoCycle from "../components/HeroVideoCycle";
 
 function Home() {
   const section1 = useScrollReveal();
@@ -7,30 +7,8 @@ function Home() {
 
   return (
     <div className="home-content">
-      {/* Hero Section with 3-image crossfade */}
-      <section className="home-hero full-bleed">
-        <div className="hero-slides" aria-hidden="true">
-          <div className="hero-slide s1" />
-          <div className="hero-slide s2" />
-          <div className="hero-slide s3" />
-        </div>
+      <HeroVideoCycle />
 
-        <div className="hero-text hero-text-animate">
-          <h1>Ξενοδοχείο Δρυάδες-Καλάβρυτα</h1>
-          <p>Ζεστή φιλοξενία στην καρδιά των Καλαβρύτων</p>
-
-          <div className="hero-buttons">
-            <Link to="/hotel" className="btn-primary">
-              Δείτε Φωτογραφίες
-            </Link>
-            <Link to="/contact" className="btn-secondary">
-              Επικοινωνία
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Section 1 */}
       <section
         ref={section1.ref}
         className={`content-row reveal ${section1.visible ? "visible" : ""}`}
@@ -48,7 +26,6 @@ function Home() {
         </div>
       </section>
 
-      {/* Section 2 */}
       <section
         ref={section2.ref}
         className={`content-row reverse reveal ${section2.visible ? "visible" : ""}`}
